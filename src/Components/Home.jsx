@@ -7,19 +7,18 @@ function Home() {
     const [countries, setCountries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    // Logs error to console on API failure (already handled in useEffect's catch block)
     useEffect(() => {
-            axios.get(API_URL)
-                .then((res) => {
-                    setCountries(res.data);
-                    setLoading(false);
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    setError(err.message);
-                    setLoading(false);
-                    console.error(err);
-                });
+        try {
+            const res = axios.get(API_URL);
+            setCountries(res.data);
+            setLoading(false);
+            console.log(res.data);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+            console.error(error);
+        }
 
     }, []);
 
@@ -32,7 +31,7 @@ function Home() {
             gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
             gap: "16px",
             padding: "20px"
-        }}> 
+        }}>  
             {countries.map((country) => (
                 <div key={country.name + Math.random()} style={{ textAlign: "center", border: "1px solid #ddd", padding: "10px", borderRadius: "8px", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
                     <img
