@@ -9,21 +9,22 @@ function Home() {
     const [error, setError] = useState(null);
     // Logs error to console on API failure (already handled in useEffect's catch block)
     useEffect(() => {
-        try {
-            const res = axios.get(API_URL);
-            setCountries(res.data);
-            setLoading(false);
-            console.log(res.data);
-        } catch (error) {
-            setError(error.message);
-            setLoading(false);
-            console.error(error);
-        }
+            axios.get(API_URL)
+                .then((res) => {
+                    setCountries(res.data);
+                    // setLoading(false);
+                    console.log(res.data);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    setLoading(false);
+                    console.error("Error fetching data:", err.message);
+                });
 
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div style={{ color: "red" }}>Error fetching data: {error}</div>;
+    // if (loading) return <div>Loading...</div>;
+    // if (error) return <div style={{ color: "red" }}>Error fetching data: {error}</div>;
 
     return (
         <div style={{
